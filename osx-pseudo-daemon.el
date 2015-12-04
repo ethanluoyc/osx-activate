@@ -77,7 +77,7 @@ platforms.
    ;; Frame is ns frame
    (eq (framep frame) 'ns)
    ;; No other frames on same terminal
-   (>= 1 (length (filtered-frame-list 
+   (>= 1 (length (filtered-frame-list
                  (lambda (frm) (eq (frame-terminal frm)
                               (frame-terminal frame))))))))
 
@@ -99,7 +99,7 @@ This is called immediately prior to FRAME being closed."
           ;; selected frame.
           (let ((sf (selected-frame)))
             (select-frame frame)
-            (make-frame)
+            (delete-other-windows)
             (switch-to-buffer "*scratch*")
             (select-frame sf))
           ;; Making a frame might unhide emacs, so hide again
@@ -133,8 +133,8 @@ Instead, just delete the frame as normal."
         ;; For NS GUI, just delete all NS frames. A new hidden one
         ;; will automatically be spawned by the advice to
         ;; `delete-frame'.
-        (mapc 'delete-frame 
-              (filtered-frame-list 
+        (mapc 'delete-frame
+              (filtered-frame-list
                (lambda (frm) (eq (frame-terminal frm)
                             (frame-terminal frame)))))
       ad-do-it)))

@@ -1,3 +1,10 @@
+This is a simple modification of the original project to
+make the hiding of the windows more subtle and more beautiful.
+Rather than creating a new frame it simply clears the last frame,
+which looks better on the Mac.
+
+---
+
 # Emacs "Pseudo-Daemon" for Mac OS X
 
 If you've ever tried to use Emacs in daemon mode on Mac OS X, you
