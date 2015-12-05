@@ -87,7 +87,7 @@ platforms.
 This is called immediately prior to FRAME being closed."
   (when (featurep 'ns)
     (let ((frame (or frame (selected-frame))))
-      (when (osxpd-frame-is-last-ns-frame frame)
+      (if (osxpd-frame-is-last-ns-frame frame)
         (progn
           ;; If FRAME is fullscreen, un-fullscreen it.
           (when (eq (frame-parameter frame 'fullscreen)
@@ -105,10 +105,16 @@ This is called immediately prior to FRAME being closed."
           ;; Making a frame might unhide emacs, so hide again
           (sit-for 0.1)
           (ns-hide-emacs t)
-          )))))
+          )
+        (progn
+          (ad-deactivate 'delete-frame)
+          (delete-frame frame t)
+          (ad-activate 'delete-frame)
+          )
+        ))))
 
 ;; TODO: Is `delete-frame-hook' an appropriate place for this?
-(defadvice delete-frame (before osxpd-keep-at-least-one-ns-frame activate)
+(defadvice delete-frame (around osxpd-keep-at-least-one-ns-frame activate)
   "When the last NS frame is deleted, create a new hidden one first."
   (when osx-pseudo-daemon-mode
     (osxpd-keep-at-least-one-ns-frame frame)))
@@ -122,7 +128,7 @@ Instead, just delete the frame as normal."
   (let ((frame (posn-window (event-start event))))
     (if (and osx-pseudo-daemon-mode
              (eq 'ns (framep frame)))
-        (delete-frame frame t)
+        (osxpd-keep-at-least-one-ns-frame frame)
       ad-do-it)))
 
 (defadvice save-buffers-kill-terminal (around osx-pseudo-daemon activate)
