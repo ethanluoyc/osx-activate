@@ -1,9 +1,10 @@
-This is a simple modification of the original project to
+This is a simple evolvement from the project [osx-pseudo-daemon](https://github.com/DarwinAwardWinner/osx-pseudo-daemon) to
 make the hiding of the windows more subtle and more beautiful.
 Rather than creating a new frame it simply clears the last frame,
-which looks better on the Mac.
+which makes editing on Mac better.
 
----
+You may checkout the original repo for configuration settings, I still 
+use the same package name and mode name.
 
 # Emacs "Pseudo-Daemon" for Mac OS X
 
